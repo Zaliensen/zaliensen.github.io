@@ -1,5 +1,17 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>World Literacy Board | Zachary Halaby</title><link rel="stylesheet" href="../../styles.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="nav"><a class="brand" href="../../index.html">Zachary Halaby<span>Selected work</span></a><nav aria-label="Main navigation"><a href="../../index.html#work">All work</a><a href="https://github.com/Zaliensen">GitHub</a></nav></header><main id="main" class="document"><p class="source-link"><a href="https://github.com/Zaliensen/classroom-workflows/tree/main/projects/world-literacy-board">View this project’s source and README on GitHub</a></p><p><a href="../world-literacy-board.html">Return to World Literacy Board</a></p><h1>Validation</h1>
-<p>Checked on November 26, 2026 using installed Chrome in an isolated headless Playwright context, opened as a local file. Only the cleaned review edition was executed.</p>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>World Literacy Board | Zachary Halaby</title><link rel="stylesheet" href="../../styles.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="nav"><a class="brand" href="../../index.html">Zachary Halaby<span>Selected work</span></a><nav aria-label="Main navigation"><a href="../../index.html#work">All work</a><a href="https://github.com/Zaliensen">GitHub</a></nav></header><main id="main" class="document"><p><a href="../world-literacy-board.html">Return to project notes</a></p><h1>Validation</h1>
+<h2>Bonus/settings regression: November 27, 2026</h2>
+<p>From this package, run <code>node test_game.cjs</code> (Node built-ins only). The test executes selected public functions with a synthetic DOM and controlled timers; it does not load the private original app. It failed before the change because one bonus advanced from player 1 to player 3, then passed after the fix.</p>
+<ul>
+<li>One bonus awards two points and advances one player after celebration.</li>
+<li>Repeated or stale completion callbacks cannot advance again.</li>
+<li>Dice activation waits while celebration completion is pending.</li>
+<li>Opening settings settles the awarded turn once; canceling settings leaves that next player selected.</li>
+<li>Saving settings clears the pending callback and preserves the reset first player, scores and positions.</li>
+<li>Finished games do not advance; replacing an overlay invalidates its earlier callback.</li>
+</ul>
+<p>Six scenarios passed. The source and portfolio runtime are compared by the repository verification command, allowing only the listed documentation-link rewrite and line-ending normalization. Browser observations below are dated separately; no new hardware-accessibility or classroom-outcome claim follows from the timer simulation.</p>
+<h2>Initial browser review: November 26, 2026</h2>
+<p>Checked using installed Chrome in an isolated headless Playwright context, opened as a local file. Only the cleaned review edition was executed.</p>
 <ul>
 <li>45 country/level/board-length configurations build 24, 32 or 40 spaces.</li>
 <li>Twelve fixed fictional players; no editable identity fields.</li>

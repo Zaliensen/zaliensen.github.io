@@ -1,10 +1,9 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Classroom Workflow Reporting | Zachary Halaby</title><link rel="stylesheet" href="../../styles.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="nav"><a class="brand" href="../../index.html">Zachary Halaby<span>Selected work</span></a><nav aria-label="Main navigation"><a href="../../index.html#work">All work</a><a href="https://github.com/Zaliensen">GitHub</a></nav></header><main id="main" class="document"><p><a href="../classroom-data-reports.html">Return to Classroom Workflow Reporting</a></p><h1>Validation</h1>
-<p>Checked on 2026-11-26 using the existing Python 3.12.14 runtime and standard library. No real classroom file was opened or imported for this example, and no network service was called by the generator, report builder or tests. A second agent independently reviewed the arithmetic and missingness definitions and found no blocking issue.</p>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Classroom Workflow Reporting | Zachary Halaby</title><link rel="stylesheet" href="../../styles.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="nav"><a class="brand" href="../../index.html">Zachary Halaby<span>Selected work</span></a><nav aria-label="Main navigation"><a href="../../index.html#work">All work</a><a href="https://github.com/Zaliensen">GitHub</a></nav></header><main id="main" class="document"><p><a href="../classroom-data-reports.html">Return to Classroom Workflow Reporting</a> · <a href="https://github.com/Zaliensen/classroom-workflows/tree/main/projects/classroom-data-reports">Source and tests</a></p><h1>Validation</h1>
+<p>Checked again on 2026-11-27 using Python 3.12.14 and the standard library. No real classroom file was opened or imported for this example, and no network service was called by the generator, report builder or tests. Earlier independent review checked the arithmetic and missingness definitions.</p>
 <p>Commands completed successfully:</p>
-<pre><code class="language-text">python generate_demo_data.py
-python build_report.py
-python -m unittest discover -s tests -v
+<pre><code class="language-text">python3 -B verify_reproduction.py
 </code></pre>
+<p>On Windows with the Python launcher, use <code>py -3 -B verify_reproduction.py</code>. The check runs the following six unit tests and then regenerates the three outputs in a fresh temporary folder containing only the two generator scripts. The generated data, summary and HTML must match the included files byte for byte.</p>
 <p>Six tests passed:</p>
 <ol>
 <li>Reporting coverage distinguishes unrecorded and inapplicable rows.</li>
@@ -12,7 +11,8 @@ python -m unittest discover -s tests -v
 <li>Zero denominators return no rate and render an explicit explanation.</li>
 <li>An extra identity field and a false synthetic declaration are rejected. The test marker is invented.</li>
 <li>Negative counts, booleans used as counts, impossible count relationships, duplicate keys and replacing a missing count with zero are rejected.</li>
-<li>Fixture generation is deterministic and report output has no scripts, input form or external HTTPS link.</li>
+<li>Fixture generation is deterministic and report output has no scripts, input form or remote assets. Its sole external hyperlink points to this source package; it loads only when followed.</li>
 </ol>
+<p>Fresh reproduction also passed for <code>data/synthetic_operations.json</code>, <code>report_summary.json</code> and <code>report.html</code>. Outputs are written as UTF-8 with LF line endings, and the project attributes preserve those endings on checkout. The expected figures are 127 completed / 141 planned jobs (90.1%), 10 recorded / 11 applicable rows (90.9%), 464 known minutes and one recorded row with unknown duration. The known zero remains in reporting coverage. These are invented arithmetic examples, not real outcomes.</p>
 <p>These tests validate the intended sample behavior. They do not test a production deployment, certify accessibility or prove arbitrary data have been de-identified. The fixed HTML includes table captions, column headers and overflow handling; it has no interactive application runtime.</p>
 </main><footer><a href="../../index.html#work">Return to the collection</a><span>Source, demonstrations and outcomes are labeled separately.</span></footer></body></html>

@@ -64,6 +64,8 @@
     screens.forEach(x => $("#"+x).classList.toggle("active", x===id));
     const index = screens.indexOf(id);
     renderProgress(index);
+    const heading=$("#"+id+" h2") || $("#"+id+" h1");
+    if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true});}
     window.scrollTo({top:0, behavior:"smooth"});
     if (state.voice && speakText) setTimeout(()=>speak(speakText), 250);
   }
@@ -126,14 +128,15 @@
 
   function renderPlan() {
     const d=DATA[state.country];
-    const group=(title,key,items,format)=>`<div class="question-block"><h3>${title}</h3><div class="choice-grid">${items.map((item,i)=>`<button class="choice-btn ${state.selections[key]===i?'selected':''}" data-choice="${key}" data-index="${i}">${format(item,i)}</button>`).join("")}</div></div>`;
+    const group=(title,key,items,format)=>`<div class="question-block"><h3>${title}</h3><div class="choice-grid">${items.map((item,i)=>`<button class="choice-btn ${state.selections[key]===i?'selected':''}" data-choice="${key}" data-index="${i}" aria-pressed="${state.selections[key]===i}">${format(item,i)}</button>`).join("")}</div></div>`;
     $("#questionArea").innerHTML =
       group("1. Choose a truck name","name",d.names,x=>x) +
       group("2. Choose a slogan","slogan",d.slogans,x=>x) +
       group("3. Choose your truck colors","colors",d.colorChoices,x=>`<span class="color-swatch" style="background:${x[2]}"></span><span class="color-swatch" style="background:${x[3]}"></span>${x[0]} and ${x[1]}`) +
       group("4. Choose the main food your truck serves","food",d.foods,x=>`${x.emoji} ${x.name}<small>${x.fact}</small>`);
     $$('[data-choice]').forEach(btn=>btn.addEventListener('click',()=>{
-      state.selections[btn.dataset.choice]=+btn.dataset.index; renderPlan(); beep("good");
+      state.selections[btn.dataset.choice]=+btn.dataset.index; renderPlan();
+      $(`[data-choice="${btn.dataset.choice}"][data-index="${btn.dataset.index}"]`)?.focus({preventScroll:true}); beep("good");
       const label=btn.textContent.trim(); speak(`You chose ${label}.`); updatePlanNext();
     }));
     updatePlanNext();
@@ -168,16 +171,33 @@
     $("#decorateNext").disabled=state.stickers.length<3;
   }
   function makeDraggable(el,index){
-    let active=false;
+    let activePointer=null;
+    const item=state.stickers[index];
     el.addEventListener("keydown",e=>{
-      const item=state.stickers[index];if(!item)return;
+      if(!state.stickers.includes(item))return;
       const directions={ArrowLeft:[-3,0],ArrowRight:[3,0],ArrowUp:[0,-3],ArrowDown:[0,3]};
       if(directions[e.key]){e.preventDefault();const [dx,dy]=directions[e.key];item.x=Math.max(2,Math.min(94,item.x+dx));item.y=Math.max(10,Math.min(82,item.y+dy));el.style.left=item.x+"%";el.style.top=item.y+"%";}
-      if(e.key==="Delete"||e.key==="Backspace"){e.preventDefault();state.stickers.splice(index,1);renderStickers();$("#undoSticker").focus();}
+      if(e.key==="Delete"||e.key==="Backspace"){e.preventDefault();state.stickers.splice(state.stickers.indexOf(item),1);renderStickers();$("#undoSticker").focus();}
     });
-    const move=e=>{ if(!active)return; e.preventDefault(); const r=$("#truckStage").getBoundingClientRect(); const x=Math.max(2,Math.min(94,(e.clientX-r.left)/r.width*100)); const y=Math.max(10,Math.min(82,(e.clientY-r.top)/r.height*100)); state.stickers[index].x=x;state.stickers[index].y=y;el.style.left=x+"%";el.style.top=y+"%"; };
-    el.addEventListener("pointerdown",e=>{active=true;el.setPointerCapture(e.pointerId);el.style.cursor="grabbing";});
-    el.addEventListener("pointermove",move); el.addEventListener("pointerup",()=>{active=false;el.style.cursor="grab";});
+    const stopDrag=e=>{
+      if(activePointer!==e.pointerId)return;
+      activePointer=null;el.style.cursor="grab";
+      if(el.hasPointerCapture?.(e.pointerId))el.releasePointerCapture(e.pointerId);
+    };
+    const move=e=>{
+      if(activePointer!==e.pointerId||!state.stickers.includes(item))return;
+      e.preventDefault();const r=$("#truckStage").getBoundingClientRect();
+      if(!r.width||!r.height)return;
+      item.x=Math.max(2,Math.min(94,(e.clientX-r.left)/r.width*100));
+      item.y=Math.max(10,Math.min(82,(e.clientY-r.top)/r.height*100));
+      el.style.left=item.x+"%";el.style.top=item.y+"%";
+    };
+    el.addEventListener("pointerdown",e=>{
+      if(activePointer!==null||e.isPrimary===false||(e.button!==undefined&&e.button!==0)||!state.stickers.includes(item))return;
+      e.preventDefault();activePointer=e.pointerId;el.setPointerCapture(e.pointerId);el.style.cursor="grabbing";
+    });
+    el.addEventListener("pointermove",move);
+    for(const event of ["pointerup","pointercancel","lostpointercapture"])el.addEventListener(event,stopDrag);
   }
 
   function renderReview() {
@@ -200,7 +220,7 @@
     const d=DATA[state.country];
     $("#customerRow").innerHTML=state.roundCustomers.map((c,i)=>`<button class="customer ${c.served?'served':''}" data-customer="${i}" ${c.served?'disabled':''}><div class="person">${c.person}</div><div class="bubble">${c.served?'Thank you! ✅':`I would like ${c.food.emoji}<br>${c.food.name}, please.`}</div><div class="table-art">${c.table}</div></button>`).join("");
     $("#foodChoices").innerHTML=d.foods.map((f,i)=>`<button class="food-choice ${state.selectedFood===i?'selected':''}" data-food="${i}"><span class="emoji">${f.emoji}</span>${f.name}</button>`).join("");
-    $$("[data-food]").forEach(b=>b.addEventListener("click",()=>{state.selectedFood=+b.dataset.food;renderDelivery();$("#feedback").textContent=`You picked ${d.foods[state.selectedFood].name}. Now tap the matching customer.`;speak($("#feedback").textContent);beep();clearTimeout(state.hintTimer);state.hintTimer=setTimeout(showCustomerHint,5000);}));
+    $$("[data-food]").forEach(b=>b.addEventListener("click",()=>{state.selectedFood=+b.dataset.food;renderDelivery();$(`[data-food="${state.selectedFood}"]`)?.focus({preventScroll:true});$("#feedback").textContent=`You picked ${d.foods[state.selectedFood].name}. Now tap the matching customer.`;speak($("#feedback").textContent);beep();clearTimeout(state.hintTimer);state.hintTimer=setTimeout(showCustomerHint,5000);}));
     $$("[data-customer]").forEach(b=>b.addEventListener("click",()=>serveCustomer(+b.dataset.customer)));
     $("#scoreBox").textContent=`Orders: ${state.served} of 6 ⭐ ${state.stars}`;
   }
@@ -211,7 +231,7 @@
     if(!c || c.served || !d) return;
     if(state.selectedFood===null){ $("#feedback").textContent="First, tap a food on the tray."; speak($("#feedback").textContent); beep("bad"); return; }
     const picked=d.foods[state.selectedFood];
-    if(picked.name===c.food.name){ c.served=true;state.served++;state.stars++;state.selectedFood=null;$("#feedback").textContent=`Great job! You delivered ${picked.name}.`;speak($("#feedback").textContent);beep("good");animateTruckTo(index);renderDelivery();
+    if(picked.name===c.food.name){ c.served=true;state.served++;state.stars++;state.selectedFood=null;$("#feedback").textContent=`Great job! You delivered ${picked.name}.`;speak($("#feedback").textContent);beep("good");animateTruckTo(index);renderDelivery();$("[data-food]")?.focus({preventScroll:true});
       if(state.served>=6){state.transitionTimer=setTimeout(finishGame,1100);return;}
       if(state.roundCustomers.every(x=>x.served)){state.transitionTimer=setTimeout(buildRound,1000);} else state.hintTimer=setTimeout(showHint,6500);
     } else {
