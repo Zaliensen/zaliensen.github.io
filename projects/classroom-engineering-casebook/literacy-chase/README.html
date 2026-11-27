@@ -24,8 +24,8 @@
 <td>Generate artifacts from session work in the original application.</td>
 </tr>
 </tbody></table>
-<h2>Why this is useful in the portfolio</h2>
-<p>Explain the classroom task, the response or pacing constraint, and the code decision that changes the experience. Point to the functions above rather than claiming a framework or platform that the project does not use. The evidence supports a discussion of user-focused implementation and state management; it does not establish adoption metrics or learning gains.</p>
+<h2>Implementation decisions</h2>
+<p><code>pickMode</code> uses a configured activity pool, rotates it by stop and participant indexes, and tries to avoid the previously selected format. The response renderer can therefore switch between choices, sentence frames, construction steps and open text without replacing the surrounding turn workflow. The retained selector isolates this routing decision from the original page generation, signatures and exports.</p>
 <h2>Included and excluded</h2>
 <p>The generic mode selector is retained with isolated in-memory state and tested using fictional inputs. Original characters, videos, learner plans, signatures, text responses and export records are excluded.</p>
 <p>Static inspection and JavaScript parsing were performed on the recovered source without launching it. Only the generic excerpts identified in the collection&#39;s provenance file are runnable here. The original full application has not been runtime-tested in this review. Any future complete public release needs a separate source and media review.</p>

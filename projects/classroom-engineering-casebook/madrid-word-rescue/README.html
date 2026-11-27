@@ -24,8 +24,8 @@
 <td>Separate activity setup from ongoing canvas updates.</td>
 </tr>
 </tbody></table>
-<h2>Why this is useful in the portfolio</h2>
-<p>Explain the classroom task, the response or pacing constraint, and the code decision that changes the experience. Point to the functions above rather than claiming a framework or platform that the project does not use. The evidence supports a discussion of user-focused implementation and state management; it does not establish adoption metrics or learning gains.</p>
+<h2>Implementation decisions</h2>
+<p><code>dialogueDelayFor</code> scales the display delay with word count while imposing a 2.5-second minimum. Answer handling is a separate decision: <code>checkDialogueChoice</code> disables the choices before displaying an explanation, then offers either a retry or an explicit button to build the passage. Timing controls presentation pace; the choice and transition controls determine when the workflow moves forward.</p>
 <h2>Included and excluded</h2>
 <p>The timing helper is retained and tested. The full dialogue, characters, recordings, media, stored records and original application are excluded. A timed reading delay is a design choice, not measured comprehension.</p>
 <p>Static inspection and JavaScript parsing were performed on the recovered source without launching it. Only the generic excerpts identified in the collection&#39;s provenance file are runnable here. The original full application has not been runtime-tested in this review. Any future complete public release needs a separate source and media review.</p>

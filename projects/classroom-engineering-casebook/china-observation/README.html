@@ -24,8 +24,8 @@
 <td>Select the current turn and render its activity separately.</td>
 </tr>
 </tbody></table>
-<h2>Why this is useful in the portfolio</h2>
-<p>Explain the classroom task, the response or pacing constraint, and the code decision that changes the experience. Point to the functions above rather than claiming a framework or platform that the project does not use. The evidence supports a discussion of user-focused implementation and state management; it does not establish adoption metrics or learning gains.</p>
+<h2>Implementation decisions</h2>
+<p>Question preparation and response entry are separate parts of the workflow. <code>buildQuestionDeck</code> fills the requested deck length from the question bank while skipping an immediate repeat. For placement tasks, <code>tapDragChoice</code> stores the selected text and <code>tapDropZone</code> passes it to the response handler. This provides a select-then-place route alongside dragging, without changing the answer check.</p>
 <h2>Included and excluded</h2>
 <p>Documentation only. Original learner setup values, remote photographs, video embeds and narration paths are excluded. The shuffle uses a random sort comparator; no uniform-randomness claim is made.</p>
 <p>Static inspection and JavaScript parsing were performed on the recovered source without launching it. Only the generic excerpts identified in the collection&#39;s provenance file are runnable here. The original full application has not been runtime-tested in this review. Any future complete public release needs a separate source and media review.</p>

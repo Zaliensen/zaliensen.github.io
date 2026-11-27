@@ -24,8 +24,8 @@
 <td>Separate input handling from response interpretation.</td>
 </tr>
 </tbody></table>
-<h2>Why this is useful in the portfolio</h2>
-<p>Explain the classroom task, the response or pacing constraint, and the code decision that changes the experience. Point to the functions above rather than claiming a framework or platform that the project does not use. The evidence supports a discussion of user-focused implementation and state management; it does not establish adoption metrics or learning gains.</p>
+<h2>Implementation decisions</h2>
+<p><code>activityFor</code> balances two histories: the participant’s previous activity and the activity most recently assigned across the session. It first tries to avoid both, then relaxes the session-wide restriction if needed. Separately, <code>prepOptionsForStudent</code> can reduce the response set to the target preposition and one distractor. Activity variety and answer-field size are therefore distinct configuration decisions.</p>
 <h2>Included and excluded</h2>
 <p>A mode-routing excerpt is retained with invented participant labels and isolated state. No original names, goal settings, response logs, drawings, media or exports are included. Level labels are configuration values, not validated classifications of ability.</p>
 <p>Static inspection and JavaScript parsing were performed on the recovered source without launching it. Only the generic excerpts identified in the collection&#39;s provenance file are runnable here. The original full application has not been runtime-tested in this review. Any future complete public release needs a separate source and media review.</p>

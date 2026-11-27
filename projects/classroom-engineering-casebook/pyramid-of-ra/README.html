@@ -24,8 +24,8 @@
 <td>Separate persistence and state repair from the map renderer.</td>
 </tr>
 </tbody></table>
-<h2>Why this is useful in the portfolio</h2>
-<p>Explain the classroom task, the response or pacing constraint, and the code decision that changes the experience. Point to the functions above rather than claiming a framework or platform that the project does not use. The evidence supports a discussion of user-focused implementation and state management; it does not establish adoption metrics or learning gains.</p>
+<h2>Implementation decisions</h2>
+<p><code>findPath</code> searches four-direction neighbors with a queue and visited set, then reconstructs the route through predecessor entries. Before searching, a blocked destination is replaced by an adjacent walkable tile when one is available. The function returns an empty route when the chosen destination cannot be reached. Keeping this calculation separate from rendering makes map movement inspectable with small synthetic grids.</p>
 <h2>Included and excluded</h2>
 <p>The generic pathfinding function is retained in the tested excerpt module. The complete game, art, passages, save files and personalized state are excluded. Support-use counts are software events, not evidence of learning.</p>
 <p>Static inspection and JavaScript parsing were performed on the recovered source without launching it. Only the generic excerpts identified in the collection&#39;s provenance file are runnable here. The original full application has not been runtime-tested in this review. Any future complete public release needs a separate source and media review.</p>

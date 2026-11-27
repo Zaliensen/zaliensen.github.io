@@ -24,8 +24,8 @@
 <td>Separate preview and final letter rendering.</td>
 </tr>
 </tbody></table>
-<h2>Why this is useful in the portfolio</h2>
-<p>Explain the classroom task, the response or pacing constraint, and the code decision that changes the experience. Point to the functions above rather than claiming a framework or platform that the project does not use. The evidence supports a discussion of user-focused implementation and state management; it does not establish adoption metrics or learning gains.</p>
+<h2>Implementation decisions</h2>
+<p><code>activityMode</code> selects from a configured list using the stop and participant indexes, so the letter-writing sequence can reuse different response formats. <code>chunkSentence</code> supplies a smaller construction step by dividing text into two parts. These helpers determine how the response is assembled; the separate preview and final-letter renderers determine how the resulting work is presented.</p>
 <h2>Included and excluded</h2>
 <p>The mode-routing and text-chunk helpers are retained and tested. Personal recipients, learner plans, final letters, signatures and media are excluded. The historical theme is supporting context; the design discussion centers on scaffolding a writing task.</p>
 <p>Static inspection and JavaScript parsing were performed on the recovered source without launching it. Only the generic excerpts identified in the collection&#39;s provenance file are runnable here. The original full application has not been runtime-tested in this review. Any future complete public release needs a separate source and media review.</p>

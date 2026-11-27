@@ -24,8 +24,8 @@
 <td>Requires every expected ingredient and rejects any selected distractor before showing success.</td>
 </tr>
 </tbody></table>
-<h2>Why this is useful in the portfolio</h2>
-<p>Explain the classroom task, the response or pacing constraint, and the code decision that changes the experience. Point to the functions above rather than claiming a framework or platform that the project does not use. The evidence supports a discussion of user-focused implementation and state management; it does not establish adoption metrics or learning gains.</p>
+<h2>Implementation decisions</h2>
+<p>The construction task uses a set of selected ingredient indexes rather than a single answer. <code>toggleIngredient</code> adds or removes a choice and refreshes the plate. <code>checkBuild</code> checks both directions: every required ingredient must be selected, and every selected ingredient must belong. Selecting all options therefore cannot satisfy the task when distractors are present; feedback identifies choices to remove.</p>
 <h2>Included and excluded</h2>
 <p>Documentation only. Original images and source content are excluded. Food and cultural content has not been fact-checked for public teaching use; this note describes the software workflow.</p>
 <p>Static inspection and JavaScript parsing were performed on the recovered source without launching it. Only the generic excerpts identified in the collection&#39;s provenance file are runnable here. The original full application has not been runtime-tested in this review. Any future complete public release needs a separate source and media review.</p>

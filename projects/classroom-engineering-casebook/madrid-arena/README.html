@@ -24,8 +24,8 @@
 <td>Connect quiz progression to visible upgrades.</td>
 </tr>
 </tbody></table>
-<h2>Why this is useful in the portfolio</h2>
-<p>Explain the classroom task, the response or pacing constraint, and the code decision that changes the experience. Point to the functions above rather than claiming a framework or platform that the project does not use. The evidence supports a discussion of user-focused implementation and state management; it does not establish adoption metrics or learning gains.</p>
+<h2>Implementation decisions</h2>
+<p><code>answerQuiz</code> checks a completion flag before changing the score. A correct answer awards an upgrade and enables progression; an incorrect answer disables that choice and reveals a hint. If only one option remains, the source marks it correct and awards a smaller reward. The distinction matters when interpreting game state: reaching the next stage can follow elimination as well as an initially correct choice.</p>
 <h2>Included and excluded</h2>
 <p>Documentation only. The source can also award a lower reward when only one option remains; that behavior must not be described as an independent correct answer. Media, saved state and the full game are excluded.</p>
 <p>Static inspection and JavaScript parsing were performed on the recovered source without launching it. Only the generic excerpts identified in the collection&#39;s provenance file are runnable here. The original full application has not been runtime-tested in this review. Any future complete public release needs a separate source and media review.</p>
