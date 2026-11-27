@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 3 World Food Truck Studio</title>
+<style>
+  :root {
+    --ink: #152238;
+    --paper: #fffdf7;
+    --accent: #d62828;
+    --accent2: #f7b801;
+    --accent3: #2a9d8f;
+    --soft: #fff2c9;
+    --shadow: 0 8px 0 rgba(21,34,56,.16);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; font-family: "Trebuchet MS", Arial, sans-serif; color: var(--ink); background: #f3f7fb; }
+  body { overflow-x: hidden; }
+  button, input { font: inherit; }
+  button { touch-action: manipulation; }
+  .app { min-height: 100vh; display: flex; flex-direction: column; }
+  .target-bar {
+    position: sticky; top: 0; z-index: 50; background: linear-gradient(90deg, #182848, #294a7a);
+    color: white; padding: 12px 18px; border-bottom: 5px solid #ffd166;
+    display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center;
+  }
+  .target-label { font-weight: 900; font-size: clamp(17px, 2vw, 24px); background: #ffd166; color: #182848; padding: 8px 14px; border-radius: 999px; white-space: nowrap; }
+  .target-text { font-size: clamp(18px, 2.1vw, 27px); font-weight: 900; text-align: center; line-height: 1.15; }
+  .top-controls { display: flex; gap: 8px; }
+  .icon-btn { border: 3px solid white; color: white; background: rgba(255,255,255,.14); border-radius: 14px; min-width: 48px; min-height: 46px; cursor: pointer; font-size: 22px; }
+  .icon-btn:hover, .icon-btn:focus-visible { background: rgba(255,255,255,.27); outline: 4px solid #ffd166; }
+
+  .progress-wrap { background: white; border-bottom: 2px solid #dce4ef; padding: 10px 14px; }
+  .progress { max-width: 1100px; margin: auto; display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .step-pill { border-radius: 999px; border: 3px solid #ccd7e4; padding: 7px 4px; font-size: 13px; text-align: center; font-weight: 900; color: #637083; background: #f6f8fb; }
+  .step-pill.active { color: white; background: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
+  .step-pill.done { color: #153b2f; background: #b7f4d8; border-color: #3bc98b; }
+
+  main { width: min(1180px, 100%); margin: 0 auto; padding: 20px 14px 40px; flex: 1; }
+  .screen { display: none; animation: pop .35s ease; }
+  .screen.active { display: block; }
+  @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.99); } to { opacity: 1; transform: none; } }
+  .hero-card, .panel { background: var(--paper); border: 5px solid var(--ink); border-radius: 28px; box-shadow: var(--shadow); }
+  .hero-card { padding: clamp(20px, 4vw, 44px); text-align: center; overflow: hidden; position: relative; }
+  .hero-card::before, .hero-card::after { content: ""; position: absolute; width: 180px; height: 180px; border-radius: 50%; background: var(--soft); opacity: .65; z-index: 0; }
+  .hero-card::before { left: -70px; top: -65px; } .hero-card::after { right: -70px; bottom: -70px; }
+  .hero-card > * { position: relative; z-index: 1; }
+  h1, h2, h3, p { margin-top: 0; }
+  h1 { font-size: clamp(34px, 5vw, 64px); line-height: .98; margin-bottom: 14px; }
+  h2 { font-size: clamp(28px, 4vw, 48px); line-height: 1.02; }
+  h3 { font-size: clamp(20px, 2.6vw, 31px); }
+  .lead { font-size: clamp(18px, 2vw, 25px); line-height: 1.35; font-weight: 700; }
+  .country-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 26px; }
+  .country-card { border: 5px solid var(--ink); background: white; border-radius: 24px; padding: 18px; cursor: pointer; box-shadow: 0 7px 0 rgba(21,34,56,.16); transition: transform .15s, box-shadow .15s; }
+  .country-card:hover, .country-card:focus-visible { transform: translateY(-4px); box-shadow: 0 11px 0 rgba(21,34,56,.16); outline: 5px solid #ffd166; }
+  .country-emoji { font-size: clamp(64px, 9vw, 110px); display: block; margin-bottom: 4px; }
+  .country-card strong { display: block; font-size: clamp(25px, 3vw, 38px); }
+  .country-card span { font-size: 17px; font-weight: 800; color: #536176; }
+
+  .panel { padding: clamp(18px, 3vw, 32px); }
+  .guide-box { border: 4px solid var(--accent); background: var(--soft); border-radius: 20px; padding: 14px 18px; display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .guide-face { font-size: 42px; flex: none; }
+  .guide-box p { margin: 0; font-size: clamp(18px, 2vw, 24px); font-weight: 900; line-height: 1.25; }
+  .lesson-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .food-card { border: 4px solid var(--ink); background: white; border-radius: 20px; padding: 16px; text-align: center; box-shadow: 0 6px 0 rgba(21,34,56,.12); }
+  .food-art { width: 160px; height: 120px; max-width: 100%; margin: 0 auto 8px; display: grid; place-items: center; font-size: 76px; background: radial-gradient(circle at 50% 45%, white 0 45%, #eef3f8 46% 100%); border-radius: 22px; border: 3px solid #dfe8f1; }
+  .food-card h3 { margin-bottom: 6px; }
+  .food-card p { font-size: 17px; line-height: 1.3; min-height: 66px; }
+  .speak-food { border: 3px solid var(--ink); background: #e8f5ff; border-radius: 13px; padding: 8px 12px; font-weight: 900; cursor: pointer; }
+
+  .choice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .choice-btn { border: 4px solid var(--ink); border-radius: 20px; background: white; padding: 18px; min-height: 94px; font-size: clamp(20px, 2.4vw, 30px); font-weight: 900; cursor: pointer; box-shadow: 0 6px 0 rgba(21,34,56,.14); transition: .15s; }
+  .choice-btn small { display: block; font-size: 15px; color: #687487; margin-top: 4px; }
+  .choice-btn:hover, .choice-btn:focus-visible { transform: translateY(-3px); outline: 5px solid #ffd166; }
+  .choice-btn.selected { background: var(--accent); color: white; border-color: var(--ink); box-shadow: 0 7px 0 rgba(21,34,56,.28); }
+  .choice-btn.selected small { color: white; }
+  .question-block { margin: 24px 0; }
+  .question-block h3 { margin-bottom: 10px; }
+  .color-swatch { display: inline-block; width: 30px; height: 30px; border: 3px solid var(--ink); border-radius: 50%; vertical-align: middle; margin-right: 5px; }
+
+  .nav-row { display: flex; justify-content: space-between; gap: 12px; margin-top: 22px; }
+  .big-btn { border: 4px solid var(--ink); border-radius: 18px; background: #fff; padding: 14px 22px; font-size: clamp(18px, 2vw, 24px); font-weight: 900; cursor: pointer; box-shadow: 0 6px 0 rgba(21,34,56,.18); }
+  .big-btn.primary { background: var(--accent); color: white; }
+  .big-btn.good { background: #38c98b; color: #0b3023; }
+  .big-btn:disabled { opacity: .38; cursor: not-allowed; box-shadow: none; }
+  .big-btn:not(:disabled):hover, .big-btn:not(:disabled):focus-visible { transform: translateY(-2px); outline: 5px solid #ffd166; }
+
+  .decorator-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; align-items: start; }
+  .truck-stage { background: linear-gradient(#bfe8ff 0 62%, #e9d3a5 62% 100%); border: 5px solid var(--ink); border-radius: 24px; min-height: 470px; position: relative; overflow: hidden; }
+  .sun { position: absolute; right: 25px; top: 22px; font-size: 58px; }
+  .cloud { position: absolute; font-size: 55px; opacity: .9; }
+  .cloud.one { left: 25px; top: 20px; } .cloud.two { left: 42%; top: 68px; font-size: 38px; }
+  .truck { position: absolute; left: 50%; bottom: 62px; transform: translateX(-50%); width: min(760px, 90%); height: 270px; }
+  .truck-body { position: absolute; left: 12%; right: 4%; bottom: 32px; height: 190px; border: 7px solid var(--ink); border-radius: 35px 42px 18px 22px; background: linear-gradient(180deg, var(--truck1, #e63946), var(--truck2, #f1fa8c)); overflow: hidden; }
+  .cab-cut { position: absolute; right: 0; top: 0; width: 31%; height: 100%; background: rgba(255,255,255,.15); border-left: 7px solid var(--ink); clip-path: polygon(18% 0,100% 0,100% 100%,0 100%,0 38%); }
+  .window { position: absolute; right: 5%; top: 22px; width: 23%; height: 65px; background: #bde7ff; border: 6px solid var(--ink); border-radius: 14px 18px 8px 8px; transform: skewX(-10deg); }
+  .service { position: absolute; left: 7%; top: 37px; width: 42%; height: 86px; background: #fffaf0; border: 6px solid var(--ink); border-radius: 10px; }
+  .awning { position: absolute; left: 5%; top: 12px; width: 46%; height: 42px; border: 6px solid var(--ink); border-radius: 15px 15px 8px 8px; background: repeating-linear-gradient(90deg, #fff 0 34px, var(--truck2, #ffd166) 34px 68px); }
+  .truck-name-sign { position: absolute; left: 13%; right: 35%; bottom: 38px; background: rgba(255,255,255,.9); border: 5px solid var(--ink); border-radius: 12px; padding: 8px 10px; text-align: center; font-size: clamp(18px, 2.5vw, 31px); font-weight: 1000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .wheel { position: absolute; bottom: 0; width: 83px; height: 83px; border-radius: 50%; background: #263238; border: 7px solid var(--ink); box-shadow: inset 0 0 0 18px #aeb8c2; }
+  .wheel.left { left: 23%; } .wheel.right { right: 13%; }
+  .bumper { position: absolute; right: 0; bottom: 44px; width: 88px; height: 24px; background: #dbe3ec; border: 6px solid var(--ink); border-radius: 8px; }
+  .truck-sticker { position: absolute; font-size: 48px; cursor: grab; user-select: none; touch-action: none; filter: drop-shadow(0 2px 0 rgba(255,255,255,.8)); z-index: 7; }
+  .truck-sticker:focus-visible { outline: 4px solid #ffd166; border-radius: 10px; }
+  .palette { background: white; border: 5px solid var(--ink); border-radius: 24px; padding: 16px; box-shadow: var(--shadow); }
+  .palette h3 { text-align: center; margin-bottom: 12px; }
+  .sticker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+  .sticker-btn { border: 3px solid var(--ink); background: #f8fbff; border-radius: 14px; font-size: 38px; padding: 8px 3px; cursor: pointer; min-height: 66px; }
+  .sticker-btn:hover, .sticker-btn:focus-visible { outline: 4px solid #ffd166; transform: scale(1.04); }
+  .palette-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .mini-btn { border: 3px solid var(--ink); border-radius: 12px; background: #fff; padding: 9px 6px; font-weight: 900; cursor: pointer; }
+
+  .summary-card { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; }
+  .summary-list { font-size: clamp(19px, 2vw, 27px); line-height: 1.55; }
+  .summary-list strong { color: var(--accent); }
+  .mini-truck-preview { height: 300px; border: 5px solid var(--ink); border-radius: 22px; background: linear-gradient(#bfe8ff 0 62%, #e9d3a5 62% 100%); position: relative; overflow: hidden; }
+
+  .game-wrap { display: grid; gap: 18px; }
+  .game-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .scorebox { background: #fff; border: 4px solid var(--ink); border-radius: 16px; padding: 10px 16px; font-size: 22px; font-weight: 900; }
+  .customer-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .customer { background: white; border: 5px solid var(--ink); border-radius: 22px; padding: 14px; text-align: center; position: relative; min-height: 250px; cursor: pointer; transition: .2s; }
+  .customer:hover, .customer:focus-visible { transform: translateY(-3px); outline: 5px solid #ffd166; }
+  .customer.hint { animation: pulse 1s infinite; box-shadow: 0 0 0 7px #ffd166; }
+  .customer.served { opacity: .55; filter: grayscale(.4); cursor: default; }
+  .person { font-size: 66px; }
+  .bubble { background: #fff7cf; border: 4px solid var(--ink); border-radius: 22px; padding: 10px; font-size: 19px; font-weight: 900; min-height: 80px; display: grid; place-items: center; }
+  .table-art { font-size: 52px; margin-top: 6px; }
+  .tray { background: white; border: 5px solid var(--ink); border-radius: 22px; padding: 16px; }
+  .tray h3 { text-align: center; }
+  .food-choice-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .food-choice { border: 5px solid var(--ink); background: #f8fbff; border-radius: 20px; padding: 12px; min-height: 135px; font-size: 26px; font-weight: 900; cursor: pointer; }
+  .food-choice .emoji { display: block; font-size: 60px; }
+  .food-choice.selected { background: #b7f4d8; outline: 6px solid #38c98b; }
+  .food-choice.hint { animation: pulse 1s infinite; outline: 6px solid #ffd166; }
+  @keyframes pulse { 50% { transform: scale(1.035); } }
+  .feedback { min-height: 68px; border: 4px solid var(--ink); border-radius: 18px; background: #edf7ff; padding: 12px; font-size: clamp(20px, 2.4vw, 29px); font-weight: 900; text-align: center; display: grid; place-items: center; }
+  .truck-run { position: fixed; z-index: 100; font-size: 92px; pointer-events: none; left: -130px; top: 45%; transition: left 1s ease, top .6s ease; }
+  .confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 200; }
+  .confetti i { position: absolute; top: -20px; width: 14px; height: 22px; background: var(--c); animation: fall 2.5s linear forwards; transform: rotate(var(--r)); }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+  .finish-card { text-align: center; }
+  .stars { font-size: clamp(46px, 7vw, 90px); letter-spacing: 8px; }
+  .certificate { border: 6px double var(--accent); background: #fffdf2; border-radius: 24px; padding: 22px; max-width: 780px; margin: 20px auto; }
+
+  .toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(120px); background: #132238; color: white; border: 4px solid #ffd166; border-radius: 16px; padding: 12px 18px; font-weight: 900; z-index: 300; transition: .25s; text-align: center; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 850px) {
+    .target-bar { grid-template-columns: 1fr auto; }
+    .target-label { display: none; }
+    .target-text { text-align: left; font-size: 17px; }
+    .progress { grid-template-columns: repeat(3, 1fr); }
+    .country-grid, .lesson-grid, .customer-row { grid-template-columns: 1fr; }
+    .choice-grid { grid-template-columns: 1fr; }
+    .decorator-layout, .summary-card { grid-template-columns: 1fr; }
+    .palette { order: -1; }
+    .sticker-grid { grid-template-columns: repeat(6, 1fr); }
+    .truck-stage { min-height: 420px; }
+    .food-choice-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    main { padding: 12px 8px 30px; }
+    .panel { border-width: 4px; }
+    .sticker-grid { grid-template-columns: repeat(3, 1fr); }
+    .truck { height: 240px; width: 96%; }
+    .truck-body { left: 5%; right: 2%; }
+    .wheel { width: 67px; height: 67px; }
+  }
+  @media print { .target-bar, .progress-wrap, .nav-row, .top-controls { display: none !important; } .screen { display: none !important; } #finishScreen { display: block !important; } body { background: white; } }
+</style>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<style>.demo-note{background:#173e3c;color:#fff;text-align:center;padding:11px 18px;font:14px/1.5 system-ui,sans-serif}button:focus-visible,.truck-sticker:focus-visible{outline:4px solid #174d7c;outline-offset:4px}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}</style>
+</head>
+<body>
+<aside class="demo-note"><strong>World Food Truck demo</strong> · Use preset choices. Progress clears on refresh; music is optional.</aside>
+<div class="app">
+  <header class="target-bar">
+    <div class="target-label">LEARNING TARGET</div>
+    <div class="target-text">I can name foods from Japan, Egypt, and Spain and build a food truck that serves matching foods.</div>
+    <div class="top-controls">
+      <button class="icon-btn" id="voiceBtn" disabled aria-label="Text-only demo" title="Device narration removed">Aa</button>
+      <button class="icon-btn" id="musicBtn" aria-label="Turn music on or off" title="Music">🎵</button>
+      <button class="icon-btn" id="resetBtn" aria-label="Reset game" title="Reset">↻</button>
+    </div>
+  </header>
+  <div class="progress-wrap">
+    <div class="progress" id="progress"></div>
+  </div>
+  <main>
+    <section class="screen active" id="startScreen">
+      <div class="hero-card">
+        <div style="font-size:70px">🚚🍜🥙🥘</div>
+        <h1>World Food Truck Studio</h1>
+        <p class="lead">Pick a country. Learn three foods. Build and decorate your truck. Then deliver the correct meals to hungry customers.</p>
+        <div class="country-grid" id="countryGrid"></div>
+      </div>
+    </section>
+
+    <section class="screen" id="lessonScreen">
+      <div class="panel">
+        <div class="guide-box"><div class="guide-face">🧑‍🍳</div><p id="lessonGuide">Review the three food names and descriptions, then choose what your truck will serve.</p></div>
+        <h2 id="lessonTitle"></h2>
+        <div class="lesson-grid" id="lessonGrid"></div>
+        <div class="nav-row"><button class="big-btn" data-back="startScreen">Back</button><button class="big-btn primary" id="lessonNext">I learned the foods</button></div>
+      </div>
+    </section>
+
+    <section class="screen" id="planScreen">
+      <div class="panel">
+        <div class="guide-box"><div class="guide-face">💡</div><p>Choose one answer in each group. You do not need to type. The game will build your truck plan for you.</p></div>
+        <h2>Plan Your Food Truck</h2>
+        <div id="questionArea"></div>
+        <div class="nav-row"><button class="big-btn" data-back="lessonScreen">Back</button><button class="big-btn primary" id="planNext" disabled>Next: Decorate</button></div>
+      </div>
+    </section>
+
+    <section class="screen" id="decorateScreen">
+      <div class="panel">
+        <div class="guide-box"><div class="guide-face">🎨</div><p>Tap a decoration to add it. Drag it on the truck, or focus it with Tab and move it with the arrow keys. Add at least three decorations.</p></div>
+        <h2>Decorate Your Truck</h2>
+        <div class="decorator-layout">
+          <div class="truck-stage" id="truckStage" aria-label="Food truck decorating area">
+            <div class="sun">☀️</div><div class="cloud one">☁️</div><div class="cloud two">☁️</div>
+            <div class="truck" id="truck">
+              <div class="truck-body"><div class="cab-cut"></div><div class="window"></div><div class="service"></div><div class="awning"></div><div class="truck-name-sign" id="truckNameSign">Food Truck</div></div>
+              <div class="wheel left"></div><div class="wheel right"></div><div class="bumper"></div>
+            </div>
+          </div>
+          <aside class="palette">
+            <h3>Decoration Buttons</h3>
+            <div class="sticker-grid" id="stickerGrid"></div>
+            <div class="palette-actions"><button class="mini-btn" id="undoSticker">Undo</button><button class="mini-btn" id="clearStickers">Clear</button></div>
+            <p id="stickerCount" style="text-align:center;font-weight:900;margin:12px 0 0">0 decorations added</p>
+          </aside>
+        </div>
+        <div class="nav-row"><button class="big-btn" data-back="planScreen">Back</button><button class="big-btn primary" id="decorateNext" disabled>Next: Review</button></div>
+      </div>
+    </section>
+
+    <section class="screen" id="reviewScreen">
+      <div class="panel">
+        <div class="guide-box"><div class="guide-face">✅</div><p>Read your truck plan. Then start the delivery game.</p></div>
+        <h2>Your Food Truck Is Ready</h2>
+        <div class="summary-card">
+          <div class="summary-list" id="summaryList"></div>
+          <div class="mini-truck-preview" id="previewStage"></div>
+        </div>
+        <div class="nav-row"><button class="big-btn" data-back="decorateScreen">Back</button><button class="big-btn good" id="startDelivery">Start Delivery Game</button></div>
+      </div>
+    </section>
+
+    <section class="screen" id="deliveryScreen">
+      <div class="panel game-wrap">
+        <div class="guide-box"><div class="guide-face">🛎️</div><p id="deliveryGuide">Step 1: Tap a food on the tray. Step 2: Tap the customer who ordered that food.</p></div>
+        <div class="game-head"><h2 style="margin:0">Food Truck Delivery</h2><div class="scorebox" id="scoreBox">Orders: 0 of 6 ⭐ 0</div></div>
+        <div class="customer-row" id="customerRow"></div>
+        <div class="tray"><h3>Food Tray</h3><div class="food-choice-row" id="foodChoices"></div></div>
+        <div class="feedback" id="feedback">Choose a food from the tray.</div>
+      </div>
+    </section>
+
+    <section class="screen" id="finishScreen">
+      <div class="panel finish-card">
+        <div class="stars">⭐ ⭐ ⭐</div>
+        <h1>Food Truck Mission Complete</h1>
+        <p class="lead" id="finishMessage"></p>
+        <div class="certificate">
+          <h2>World Food Truck Chef</h2>
+          <p class="lead" id="certificateText"></p>
+        </div>
+        <button class="big-btn primary" id="playAgain">Play Another Country</button>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="truck-run" id="truckRun">🚚</div>
+<div class="confetti" id="confetti"></div>
+<div class="toast" id="toast"></div>
+<script src="game.js"></script>
+</body>
+</html>

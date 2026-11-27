@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Technology Gradebook | Zachary Halaby</title><link rel="stylesheet" href="../../styles.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="nav"><a class="brand" href="../../index.html">Zachary Halaby<span>Selected work</span></a><nav aria-label="Main navigation"><a href="../../index.html#work">All work</a><a href="https://github.com/Zaliensen">GitHub</a></nav></header><main id="main" class="document"><p><a href="../technology-gradebook.html">Return to Technology Gradebook</a></p><pre>Technology gradebook workflow
+
+Problem and workflow
+
+A classroom gradebook needs to keep individual activity records understandable while supporting summaries across a learner's activities and across learners for a given activity. The recovered workbook addresses those two directions of review with repeated Excel AVERAGE formulas.
+
+The case is a small operational-tool example. Its value is in the organization of a recurring task and the clarity of its calculations, rather than the complexity of the spreadsheet.
+
+Historical evidence
+
+The original workbook has three worksheets. Its populated sheet spans A1:U170, with 2,472 populated cells and 354 formula-cell records. Thirty-three explicit AVERAGE definitions include shared-formula groups. The other two sheets are empty. A read-only structural check found 25 used cell styles and 351 shared-formula records among the 354 total.
+
+For example, U4=AVERAGE(B4:T4) summarizes a row, while B10=AVERAGE(B4:B9) summarizes a column. These formula references are included without any source cell values or student labels. No macros, charts or pivot tables were detected.
+
+The selected workbook was recovered from an older backup with a successful member CRC check. Internal metadata spans 2015–2016. I have confirmed the workbook as personal work; the exact original design versus adaptation contribution should be described before claiming sole authorship.
+
+Public demonstration
+
+The new synthetic workbook preserves the idea of row and column averaging, using six fictional learner labels and nineteen generic activity columns. All scores were invented for this portfolio preparation. It deliberately avoids original names, activity titles, student records and school-specific grading rules.
+
+The reconstruction adds explicit empty-range handling: if a learner has no recorded numeric scores, the average remains blank. A recorded zero participates in the average; a blank does not. It also adds a count of recorded scores and an overall mean across all recorded observations. These are reconstruction choices, not claims about historical functionality.
+
+The overall average uses every recorded score. It is not calculated as an unweighted average of learner averages, which could give a misleading result when learners have different numbers of recorded activities.
+
+Validation
+
+The demonstration was calculated with Artifact Tool. All learner and activity averages were compared with independent arithmetic, and the overall average was checked against all synthetic numeric values. Recalculation was exercised by changing an input, clearing an entire row and entering zero. Temporary edits were restored. A final formula scan found no spreadsheet error values, and the full worksheet was visually inspected.
+
+The delivered example contains 105 recorded synthetic scores and an overall average of approximately 1.98095238. These numbers are demonstration outputs, not student results or evidence of teaching impact. Native Microsoft Excel interaction was not tested.
+
+Connection to deployment work
+
+This artifact offers a concise way to discuss a user's recurring task, the distinction between missing and recorded data, transparent calculations and responsible handling of sensitive records. It does not establish enterprise-scale analytics, a production integration or measured time savings.
+
+The original workbook remains private. Only the synthetic demonstration is intended for a future public portfolio after review.
+</pre></main><footer><a href="../../index.html#work">Return to the collection</a><span>Source, demonstrations and outcomes are labeled separately.</span></footer></body></html>

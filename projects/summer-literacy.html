@@ -1,0 +1,56 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Summer Literacy | Zachary Halaby</title><link rel="stylesheet" href="../styles.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="nav"><a class="brand" href="../index.html">Zachary Halaby<span>Selected work</span></a><nav aria-label="Main navigation"><a href="../index.html#work">All work</a><a href="https://github.com/Zaliensen">GitHub</a></nav></header><main id="main" class="document"><p class="source-link"><a href="https://github.com/Zaliensen/classroom-workflows/tree/main/projects/summer-literacy">View this project’s source and README on GitHub</a></p><p class="entry-status">Source notes / code reference · No runnable full application in this entry</p><h1>Summer literacy: task routing and consistent visual clues</h1>
+<p>Creator and classroom workflow designer: <strong>Zachary Halaby</strong>. Developed and iterated with AI coding assistance.</p>
+<p>This is a source-backed case study of the selected <strong>Week 1 Summer Literacy Smartboard Game v32, no wrong visuals</strong> application. It documents the actual recovered implementation. It is not a restored app or a new generic demonstration, and no original HTML or media is distributed in this package.</p>
+<h2>Classroom problem and implemented approach</h2>
+<p>The application combines country-themed reading and literacy tasks with paired team turns, different response demands, prompts, teacher controls and result reporting. A later set of patches addresses a specific usability problem: a clue picture or caption could accidentally depict a wrong answer or contradict the task.</p>
+<p>The final visual-selection layer gathers correct terms, proposes related visuals, rejects captions associated with wrong answers, removes duplicates and limits the visual set. Its task sanitizer also deduplicates distractors and adds a fallback if fewer than two choices remain. This is an implemented attempt to keep the instruction, visual clue and response options consistent; it is not evidence that every generated task was correct in classroom use.</p>
+<h2>Source evidence</h2>
+<p>Selected snapshot: <code>week1_summer_literacy_smartboard_game_v32_no_wrong_visuals-1.html</code>, attached to Sent Items on July 10, 2026. SHA-256: <code>7e9b0049db47d5acb638edbaa1d802552e98f6f05467c589ba750675714899eb</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Code area</th>
+<th>Implemented behavior</th>
+<th>Design implication</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>buildTurnQueue</code></td>
+<td>Pair team turns around selected activity families</td>
+<td>Different groups encounter a planned activity sequence</td>
+</tr>
+<tr>
+<td><code>makeTask</code> and later task wrappers</td>
+<td>Construct choices, sorting, sequencing and other response forms</td>
+<td>Task demand can change while a common turn workflow remains</td>
+</tr>
+<tr>
+<td><code>supportTry</code></td>
+<td>Retain attempts, provide hints and open team help after repeated attempts</td>
+<td>A retry is supported activity, not automatically independent success</td>
+</tr>
+<tr>
+<td><code>getEffectiveElapsed</code>, <code>getTimedPoints</code></td>
+<td>Compute time-dependent game points</td>
+<td>Timing affects game incentives and must not be interpreted as ability</td>
+</tr>
+<tr>
+<td><code>finishTurn</code></td>
+<td>Add named response, timing and result fields to in-memory logs</td>
+<td>Publishing the original requires a real data-boundary review</td>
+</tr>
+<tr>
+<td>Final <code>safeVisuals</code> and <code>sanitize</code></td>
+<td>Filter contradictory/duplicate clue visuals and answer options</td>
+<td>Visual consistency is a product-quality concern, not only decoration</td>
+</tr>
+</tbody></table>
+<p>The original contains six script blocks. Static parsing of the untouched source succeeds. In the first script alone, <code>buildTurnQueue</code> is declared seven times and <code>makeTask</code> six times. Later scripts wrap or replace earlier behavior again. Function order therefore matters; reading one earlier declaration does not establish final runtime behavior.</p>
+<h2>Why this package contains documentation</h2>
+<p>This source connects personalized setup, named logs and CSV export with remote media, speech support and an optional microphone/noise-meter path. Removing a few visible names or images would not establish that every later override respects the same boundary. The complete original was not executed, and no original records, media, names or capture code were copied here.</p>
+<p>A source-preserving public edition needs one coordinated integration pass: identify the final active implementations; replace personal setup with fixed fictional participants; remove record exports, microphone access and remote media; then test task generation, hints, turn progression and report semantics across the configured activities. Those changes are outstanding. A rushed alternative interface would obscure the actual engineering work, so this case study preserves the distinction.</p>
+<h2>Portfolio use and relationship</h2>
+<p>Use this to discuss how user feedback can produce a concrete correction: keep helpful visual cues while preventing a clue from pointing toward a wrong option. The layered patch history also supplies an honest refactoring example—make the effective behavior explicit and test the boundary between generation, rendering and logging.</p>
+<p>This is distinct from the World Literacy Board Game: the latter uses a board path and landing activities, while this application centers on generated task families, paired turns and result logs. They share subject matter, not a claim of interchangeable code. Keep country variants together within a consolidated classroom-tools repository and list this as documentation until a clean runtime passes review.</p>
+<p>No classroom outcomes, deployment scale, accessibility conformance or validated assessment claims are made. The Sent timestamp is the latest matching lead found in the bounded search, not proof that no later version exists elsewhere. A project software license remains to be selected.</p>
+<hr><h2>Supporting notes</h2><ul><li><a href="summer-literacy/LICENSE_STATUS.html">LICENSE STATUS</a></li><li><a href="summer-literacy/PROVENANCE.html">PROVENANCE</a></li></ul></main><footer><a href="../index.html#work">Return to the collection</a><span>Source, demonstrations and outcomes are labeled separately.</span></footer></body></html>

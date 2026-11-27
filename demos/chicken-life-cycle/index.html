@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Chicken life cycle | Classroom workflow demonstration</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="lesson.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#lesson">Skip to lesson</a>
+  <header class="masthead"><div><p class="eyebrow">Classroom workflow demonstration</p><h1>From egg to chicken</h1><p>Read, explore, build — one step at a time.</p></div><span class="badge">Anonymous demo</span></header>
+  <main>
+    <aside aria-label="Lesson settings and stages">
+      <section class="settings"><h2>Set up the activity</h2><label for="level">Response choices</label><select id="level"><option value="1">One tap · participation</option><option value="2" selected>Two choices</option><option value="3">Three choices</option></select><p class="small">Changing this setting starts the current activity again.</p><button id="restart" class="quiet">Restart this demo</button></section>
+      <nav aria-label="Life cycle stages"><h2>Explore eight stages</h2><div id="stages"></div></nav>
+      <p class="privacy">No names, audio, accounts or saved records. Refreshing clears this demonstration.</p>
+    </aside>
+    <div class="workspace">
+      <section id="lesson" class="story" aria-labelledby="stageTitle" tabindex="-1"><div class="story-top"><div><p id="stageCount" class="eyebrow"></p><h2 id="stageTitle" tabindex="-1"></h2></div><div id="stageArt" class="stage-art" aria-hidden="true"></div></div><p id="storyText" class="story-text"></p><div id="vocabulary" class="vocabulary" aria-label="Explore words"></div><p id="definition" class="definition" role="status">Choose a word to see its meaning.</p></section>
+      <section class="activity" aria-labelledby="activityTitle"><div class="activity-top"><label for="family">Practice activity</label><select id="family"></select></div><p id="participation" class="small"></p><h2 id="activityTitle" tabindex="-1"></h2><p id="direction"></p><div id="model"></div><div id="placements" class="placements"></div><div id="choices" class="choices"></div><p id="feedback" class="feedback" role="status" aria-live="polite"></p><div class="controls"><button id="clue" class="quiet" aria-expanded="false">Show a clue</button><button id="next" disabled>Next activity</button></div><p id="clueText" class="clue" hidden></p></section>
+      <details><summary>About this demonstration</summary><p>This is a new, media-free reconstruction of a recovered classroom activity. It retains the source's eight-stage learning path and one/two/three-choice interaction pattern. Lesson text, diagrams and application code were newly prepared with AI assistance. Original learner data and media are excluded. It has not been field-tested or certified for classroom use.</p></details>
+    </div>
+  </main>
+  <footer>Learning interactions stay in this tab. No analytics or network calls.</footer>
+</body>
+</html>

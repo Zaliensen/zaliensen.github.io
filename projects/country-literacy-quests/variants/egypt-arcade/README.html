@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Country Literacy Quests | Zachary Halaby</title><link rel="stylesheet" href="../../../../styles.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="nav"><a class="brand" href="../../../../index.html">Zachary Halaby<span>Selected work</span></a><nav aria-label="Main navigation"><a href="../../../../index.html#work">All work</a><a href="https://github.com/Zaliensen">GitHub</a></nav></header><main id="main" class="document"><p class="source-link"><a href="https://github.com/Zaliensen/classroom-workflows/tree/main/projects/country-literacy-quests">View this project’s source and README on GitHub</a></p><p><a href="../../../country-literacy-quests.html">Return to Country Literacy Quests</a></p><h1>Egypt Arcade Mission — timed six-chapter activity</h1>
+<p>Creator and classroom workflow designer: Zachary Halaby. Developed and iterated with AI coding assistance.</p>
+<p>A separate chapter-based activity combining timed arcade rounds, short reading passages, questions and team progress.</p>
+<p>This is a documentation and code-reference entry, not a runnable classroom application. The full original HTML, media, participant fields, saved state and external-resource links remain outside this public package. Original files were inspected statically and preserved; the original apps were not executed.</p>
+<p>The implementation supports discussion of workflow design and adaptation. It does not establish measured learning gains, verified deployment, adoption, Palantir platform experience, or sole manual coding. The cultural/subject content and accessibility behavior have not received a complete specialist or classroom review. No legal, accessibility or security certification is claimed.</p>
+<h2>Source-backed implementation evidence</h2>
+<ul>
+<li><p><code>chapters</code>: Six chapter objects. Each defines five image references, a story/passage and three questions: 18 question records in total.</p>
+</li>
+<li><p><code>startMission</code>: Full and shorter modes initialize 40-minute or 25-minute mission clocks; per-arcade durations are 180 or 75 seconds. These are configured durations, not observed session lengths.</p>
+</li>
+<li><p><code>startArcadeEngine</code>: Routes six game types: scanner, boat, catch, memory, letters and chase.</p>
+</li>
+<li><p><code>answerQuiz</code>: Marks the chosen answer, reveals correction/help when needed and enables the explicit next-question control.</p>
+</li>
+<li><p><code>skipQuiz / nextChapterTeacher</code>: Teacher routes can bypass the quiz or advance a chapter; a code/piece is recorded for progression.</p>
+</li>
+<li><p><code>clearGameTimers / state.paused</code>: Timer cleanup and pause-state checks support controlled chapter transitions.</p>
+</li>
+</ul>
+<h2>Handling for public review</h2>
+<ul>
+<li><p>The source accepts two team labels and maintains team scores. Public notes omit all user-entered labels and values.</p>
+</li>
+<li><p>The archive contains 33 JPEG files. They were inventoried but not decoded or copied; speech synthesis is also excluded. No remote HTTP host was found in the reviewed code.</p>
+</li>
+</ul>
+<h2>Family and version decision</h2>
+<p>Different chapter schema, function set and timer/arcade engine from Egypt Quest. Keep as a distinct project inside this collection, not as another Egypt Quest release.</p>
+<p>Selected source: <code>Egypt_Arcade_Mission_40_Minute.zip</code>. Selection follows the specified recovered attachment set. Filename words such as “final” or “working” are not independent proof of quality or global release chronology.</p>
+</main><footer><a href="../../../../index.html#work">Return to the collection</a><span>Source, demonstrations and outcomes are labeled separately.</span></footer></body></html>
